@@ -1,4 +1,4 @@
-use actix_web::{get, http::StatusCode, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{http::StatusCode, post, web, App, HttpResponse, HttpServer, Responder};
 use serde::Deserialize;
 
 #[derive(Deserialize)]
@@ -12,11 +12,6 @@ struct Release {
     id: u32,
     name: String,
     tag_name: String,
-}
-
-#[derive(Deserialize)]
-struct Repository {
-    action: String,
 }
 
 #[post("/new-version")]
@@ -34,7 +29,7 @@ async fn new_version(event: web::Json<ReleaseEvent>) -> (impl Responder, StatusC
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| App::new().service(new_version))
-        .bind(("127.0.0.1", 8080))?
+        .bind(("0.0.0.0", 8080))?
         .run()
         .await
 }
